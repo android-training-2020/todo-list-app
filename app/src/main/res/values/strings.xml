@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">todo-list-app</string>
+    <string name="user_name">user name</string>
+    <string name="user_password">user password</string>
+    <string name="login">Login</string>
+    <string name="login_succeeded">Login succeeded</string>
+    <string name="login_no_user">no user exists</string>
+    <string name="login_invalid_password">invalid password</string>
+    <string name="login_failed">Failed to login</string>
 </resources>
