@@ -6,10 +6,10 @@ import us.erlang.todo_list_app.data.UserDataSource;
 import us.erlang.todo_list_app.data.local.TasksLocalDataSource;
 import us.erlang.todo_list_app.data.remote.UserRemoteDataSource;
 
-public class MyApplication extends Application {
+public class ToDoApplication extends Application {
     private UserDataSource userDataSource;
     private TasksLocalDataSource tasksDataSource;
-    private static MyApplication application;
+    private static ToDoApplication application;
 
     @Override
     public void onCreate() {
@@ -19,7 +19,7 @@ public class MyApplication extends Application {
         application = this;
     }
 
-    public static MyApplication getInstance(){
+    public static ToDoApplication getInstance(){
         return application;
     }
 

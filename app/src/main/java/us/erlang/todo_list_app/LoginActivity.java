@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final LoginResult loginResult) {
                 if (loginResult.getStatus() == LoginStatus.LoginSucceeded) {
-                    Intent intent = new Intent(getApplicationContext(), TodoListActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ToDoListActivity.class);
                     startActivity(intent);
                 }
             }
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String name, String password) {
-        final UserDataSource dataSource = MyApplication.getInstance().getUserRemoteDataSource();
+        final UserDataSource dataSource = ToDoApplication.getInstance().getUserRemoteDataSource();
         dataSource
                 .login(new User(name, password))
                 .observeOn(AndroidSchedulers.mainThread())
