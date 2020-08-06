@@ -14,8 +14,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import us.erlang.todo_list_app.data.ToDoRepository;
 import us.erlang.todo_list_app.data.User;
-import us.erlang.todo_list_app.data.UserDataSource;
+import us.erlang.todo_list_app.data.IUserDataSource;
 import us.erlang.todo_list_app.data.remote.LoginResult;
 import us.erlang.todo_list_app.data.remote.LoginStatus;
 import us.erlang.todo_list_app.data.remote.LoginViewModel;
@@ -58,20 +59,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String name, String password) {
-        final UserDataSource dataSource = ToDoApplication.getInstance().getUserRemoteDataSource();
-        dataSource
-                .login(new User(name, password))
+        User user = new User(name, password);
+        final ToDoRepository repository = ToDoApplication.getInstance().getToDoRepository();
+        repository
+                .login(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
                             LoginStatus status = result.getStatus();
-                            if (status == LoginStatus.NoUserExists) {
-                                showMessage(getString(R.string.login_no_user));
-                            } else if (status == LoginStatus.InvalidPassword) {
-                                showMessage(getString(R.string.login_invalid_password));
-                            } else {
+                            if (status == LoginStatus.LoginSucceeded) {
                                 showMessage(getString(R.string.login_succeeded));
                                 viewModel.getLoginResult().postValue(result);
+                                repository.getUserDao()
+                                        .save(user)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeOn(Schedulers.io())
+                                        .subscribe();
+                            } else if (status == LoginStatus.InvalidPassword) {
+                                showMessage(getString(R.string.login_invalid_password));
+                            } else if (status == LoginStatus.NoUserExists) {
+                                showMessage(getString(R.string.login_no_user));
                             }
                         },
                         error -> {
