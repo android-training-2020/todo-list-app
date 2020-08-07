@@ -8,4 +8,6 @@
     <string name="login_invalid_password">invalid password</string>
     <string name="login_failed">Failed to login</string>
     <string name="sp_app_id">todo_list_app</string>
+    <string name="invalid_user_name">User name should be chars or digital numbers, length between 3 ~12.</string>
+    <string name="invalid_password">Password length should be range 6~ 18.</string>
 </resources>
