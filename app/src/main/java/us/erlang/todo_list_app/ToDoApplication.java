@@ -1,23 +1,24 @@
 package us.erlang.todo_list_app;
 
 import android.app.Application;
+import android.content.Context;
 
 import us.erlang.todo_list_app.data.ToDoRepository;
-import us.erlang.todo_list_app.data.local.UserDao;
-import us.erlang.todo_list_app.data.local.UserLocalDataSource;
-import us.erlang.todo_list_app.data.remote.UserRemoteDataSource;
 
 public class ToDoApplication extends Application {
-
+    private static ToDoApplication application;
 
     private ToDoRepository toDoRepository;
-    private static ToDoApplication application;
+    private SessionKeeper sessionKeeper;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        toDoRepository = new ToDoRepository(getApplicationContext());
+        this.toDoRepository = new ToDoRepository(getApplicationContext());
+
+        this.sessionKeeper = new SessionKeeper(getApplicationContext()
+                .getSharedPreferences(getString(R.string.sp_app_id), Context.MODE_PRIVATE));
 
         application = this;
     }
@@ -28,6 +29,10 @@ public class ToDoApplication extends Application {
 
     public ToDoRepository getToDoRepository() {
         return toDoRepository;
+    }
+
+    public SessionKeeper getSessionKeeper() {
+        return sessionKeeper;
     }
 
 }

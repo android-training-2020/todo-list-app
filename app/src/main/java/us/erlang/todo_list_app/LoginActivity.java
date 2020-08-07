@@ -16,7 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import us.erlang.todo_list_app.data.ToDoRepository;
 import us.erlang.todo_list_app.data.User;
-import us.erlang.todo_list_app.data.IUserDataSource;
 import us.erlang.todo_list_app.data.remote.LoginResult;
 import us.erlang.todo_list_app.data.remote.LoginStatus;
 import us.erlang.todo_list_app.data.remote.LoginViewModel;
@@ -25,13 +24,16 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userName;
     private EditText userPassword;
     private LoginViewModel viewModel;
-    private LoginResult loginResult = new LoginResult();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if (ToDoApplication.getInstance().getSessionKeeper().isSessionAlive()) {
+            gotoListActivity();
+            return;
+        }
 
         userName = findViewById(R.id.user_name);
         userPassword = findViewById(R.id.user_password);
@@ -70,11 +72,9 @@ public class LoginActivity extends AppCompatActivity {
                             if (status == LoginStatus.LoginSucceeded) {
                                 showMessage(getString(R.string.login_succeeded));
                                 viewModel.getLoginResult().postValue(result);
-                                repository.getUserDao()
-                                        .save(user)
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribeOn(Schedulers.io())
-                                        .subscribe();
+
+                                ToDoApplication.getInstance().getSessionKeeper().login();
+                                gotoListActivity();
                             } else if (status == LoginStatus.InvalidPassword) {
                                 showMessage(getString(R.string.login_invalid_password));
                             } else if (status == LoginStatus.NoUserExists) {
@@ -88,5 +88,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showMessage(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private void gotoListActivity() {
+        Intent intent = new Intent(this, ToDoListActivity.class);
+        startActivity(intent);
     }
 }

@@ -7,4 +7,5 @@
     <string name="login_no_user">no user exists</string>
     <string name="login_invalid_password">invalid password</string>
     <string name="login_failed">Failed to login</string>
+    <string name="sp_app_id">todo_list_app</string>
 </resources>
