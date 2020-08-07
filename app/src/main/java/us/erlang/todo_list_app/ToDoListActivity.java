@@ -44,12 +44,16 @@ public class ToDoListActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            ToDoApplication.getInstance().getSessionKeeper().logout();
-            gotoLoginActivity();
+            logout();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        ToDoApplication.getInstance().getSessionKeeper().logout();
+        gotoLoginActivity();
     }
 
     private void gotoLoginActivity() {
