@@ -55,7 +55,6 @@ public class ToDoListActivity extends AppCompatActivity {
             public void onChanged(List<Task> tasks) {
                 TaskItemViewAdaptor adapter = new TaskItemViewAdaptor(tasks);
                 recyclerView.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
             }
         });
         showTodoList();

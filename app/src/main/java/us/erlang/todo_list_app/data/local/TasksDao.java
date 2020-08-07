@@ -16,19 +16,19 @@ import us.erlang.todo_list_app.data.Task;
 @Dao
 public interface TasksDao {
     @Query("SELECT * FROM tasks WHERE id=:id")
-    Maybe<Task> findTaskById(String id);
+    Maybe<Task> findTaskById(Long id);
 
     @Insert(onConflict= OnConflictStrategy.REPLACE)
     Completable insertTask(Task task);
 
     @Update
-    int updateTask(Task task);
+    Completable updateTask(Task task);
 
-    @Query("SELECT * FROM Tasks")
+    @Query("SELECT * FROM Tasks order by completed, deadline")
     Observable<List<Task>> getTasks();
 
     @Query("UPDATE tasks SET completed = :completed WHERE id = :taskId")
-    void updateCompleted(String taskId, boolean completed);
+    Completable updateCompleted(Long taskId, boolean completed);
 
     @Query("DELETE FROM Tasks WHERE id = :id")
     int deleteTask(Long id);
