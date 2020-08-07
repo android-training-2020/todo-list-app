@@ -31,5 +31,5 @@ public interface TasksDao {
     Completable updateCompleted(Long taskId, boolean completed);
 
     @Query("DELETE FROM Tasks WHERE id = :id")
-    int deleteTask(Long id);
+    Completable deleteTask(Long id);
 }

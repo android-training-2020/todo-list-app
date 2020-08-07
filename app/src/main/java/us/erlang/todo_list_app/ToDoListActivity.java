@@ -22,12 +22,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import us.erlang.todo_list_app.data.Task;
+import us.erlang.todo_list_app.view_model.CurrentTaskViewModel;
 import us.erlang.todo_list_app.view_model.TasksViewModel;
 
 public class ToDoListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private TasksViewModel tasksViewModel;
+    private CurrentTaskViewModel currentTaskViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,22 @@ public class ToDoListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         tasksViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        currentTaskViewModel = ViewModelProviders.of(this).get(CurrentTaskViewModel.class);
 
+        currentTaskViewModel.getCurrentTaskId().observe(this, new androidx.lifecycle.Observer<Long>() {
+            @Override
+            public void onChanged(Long taskId) {
+                Intent intent = new Intent(getApplicationContext(), EditTaskActivity.class);
+                intent.putExtra("currentTaskId", taskId);
+                startActivity(intent);
+            }
+        });
+
+        AppCompatActivity me = this;
         tasksViewModel.getTasks().observe(this, new androidx.lifecycle.Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
-                TaskItemViewAdaptor adapter = new TaskItemViewAdaptor(tasks);
+                TaskItemViewAdaptor adapter = new TaskItemViewAdaptor(tasks, me);
                 recyclerView.setAdapter(adapter);
             }
         });

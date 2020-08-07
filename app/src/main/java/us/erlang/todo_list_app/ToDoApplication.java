@@ -3,6 +3,9 @@ package us.erlang.todo_list_app;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
+
 import us.erlang.todo_list_app.data.ToDoRepository;
 
 public class ToDoApplication extends Application {
