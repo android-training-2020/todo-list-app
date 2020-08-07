@@ -51,7 +51,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private void addTask(String title, String desc) {
         ToDoApplication.getInstance().getToDoRepository().getTasksDao()
-                .save(new Task(title, desc, false, deadline))
+                .insertTask(new Task(title, desc, false, deadline))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
         .subscribe(new CompletableObserver() {
@@ -62,13 +62,13 @@ public class AddTaskActivity extends AppCompatActivity {
 
             @Override
             public void onComplete() {
-                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "succeed to add task", Toast.LENGTH_SHORT);
                 gotoListViewActivity();
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("","",e);
+                Log.e("AddTaskActivity","failed to add task",e);
             }
         });
     }

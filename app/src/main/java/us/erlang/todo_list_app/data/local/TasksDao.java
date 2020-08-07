@@ -10,29 +10,26 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import us.erlang.todo_list_app.data.Task;
 
 @Dao
 public interface TasksDao {
-    @Query("SELECT * FROM tasks WHERE title=:title")
-    Maybe<Task> findByTitle(String title);
+    @Query("SELECT * FROM tasks WHERE id=:id")
+    Maybe<Task> findTaskById(String id);
 
     @Insert(onConflict= OnConflictStrategy.REPLACE)
-    Completable save(Task task);
-
-    @Query("SELECT * FROM Tasks")
-    List<Task> getTasks();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTask(Task task);
+    Completable insertTask(Task task);
 
     @Update
     int updateTask(Task task);
 
+    @Query("SELECT * FROM Tasks")
+    Observable<List<Task>> getTasks();
+
     @Query("UPDATE tasks SET completed = :completed WHERE id = :taskId")
     void updateCompleted(String taskId, boolean completed);
 
-    @Query("DELETE FROM Tasks WHERE completed = 1")
-    int deleteCompletedTasks();
-
+    @Query("DELETE FROM Tasks WHERE id = :id")
+    int deleteTask(Long id);
 }
