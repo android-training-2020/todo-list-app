@@ -12,15 +12,65 @@ import us.erlang.todo_list_app.util.DateConverter;
 @Entity(tableName = "tasks")
 public class Task {
     @PrimaryKey(autoGenerate = true)
-    public Long id;
+    private Long id;
 
     @ColumnInfo
-    public String title;
+    private String title;
 
     @ColumnInfo
-    public boolean completed;
+    private String description;
+
+    @ColumnInfo
+    private boolean completed;
 
     @ColumnInfo
     @TypeConverters(DateConverter.class)
-    public Date deadline;
+    private Date deadline;
+
+    public Task(String title, String description, boolean completed, Date deadline) {
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+        this.deadline = deadline;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

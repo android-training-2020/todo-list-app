@@ -23,7 +23,7 @@ import us.erlang.todo_list_app.data.ToDoRepository;
 import us.erlang.todo_list_app.data.User;
 import us.erlang.todo_list_app.data.remote.LoginResult;
 import us.erlang.todo_list_app.data.remote.LoginStatus;
-import us.erlang.todo_list_app.data.remote.LoginViewModel;
+import us.erlang.todo_list_app.view_model.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText userName;

@@ -21,16 +21,18 @@ public class ToDoListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton addTaskButton = findViewById(R.id.fab);
+        FloatingActionButton addTaskButton = findViewById(R.id.add_task);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    addTask();
+                    gotoAddTaskActivity();
             }
         });
     }
 
-    private void addTask() {
+    private void gotoAddTaskActivity() {
+        Intent intent = new Intent(this, AddTaskActivity.class);
+        startActivity(intent);
     }
 
     @Override
