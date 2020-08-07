@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.reactivex.CompletableObserver;
@@ -35,8 +37,14 @@ public class AddTaskActivity extends AppCompatActivity {
         CalendarView calendarView = findViewById(R.id.calendar_view);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                deadline = new Date(year, month, day);
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                String chosenDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    deadline = sdf.parse(chosenDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -54,23 +62,23 @@ public class AddTaskActivity extends AppCompatActivity {
                 .insertTask(new Task(title, desc, false, deadline))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-        .subscribe(new CompletableObserver() {
-            @Override
-            public void onSubscribe(Disposable d) {
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onComplete() {
-                Toast.makeText(getApplicationContext(), "succeed to add task", Toast.LENGTH_SHORT);
-                gotoListViewActivity();
-            }
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(getApplicationContext(), "succeed to add task", Toast.LENGTH_SHORT);
+                        gotoListViewActivity();
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e("AddTaskActivity","failed to add task",e);
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("AddTaskActivity", "failed to add task", e);
+                    }
+                });
     }
 
     private void gotoListViewActivity() {
